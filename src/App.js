@@ -1,25 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
+import { motion } from "framer-motion"
+import {useState} from "react";
+import {findAllByDisplayValue} from "@testing-library/react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isOpen, setIsOpen] = useState(false);
+
+
+
+    const container = {
+        hidden: { opacity: 1, scale: 0 },
+        visible: {
+            opacity: 1,
+            scale: 3,
+            transition: {
+                delayChildren: 0.3,
+                staggerChildren: 0.2
+            }
+        }
+    }
+
+    const item = {
+        hidden: { y: 50, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1
+        }
+    }
+    return (
+        <>
+            <div style={{ borderRadius: '5px', textAlign: 'center', background: "white"}}
+                 onClick={() => setIsOpen(!isOpen)}>Show</div>
+            <motion.ul
+                className={`container ${isOpen ? "open" : ""}`}
+                variants={container}
+                initial="hidden"
+                animate={isOpen ? "visible" : "hidden"}
+            >
+                {[0, 1, 2, 3].map((index) => (
+                    <motion.li key={index} className="item" variants={item} />
+                ))}
+            </motion.ul>
+        </>
+    );
 }
 
 export default App;
